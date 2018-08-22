@@ -1,0 +1,26 @@
+﻿AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Streamdata.io Github Code Search Streaming to Amazon S3 Data Lake Using Lambda
+Resources:
+  streamdataiogithubsearchcode:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      CodeUri: s3://streamdata-serverless/streamdata-io-github-search-code/package.zip
+      Description: Streamdata.io Github Code Search Streaming to Amazon S3 Data Lake Using Lambda
+      MemorySize: 128
+      Timeout: 63
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: streamdata-io-github-search-code
+        - S3CrudPolicy:
+            BucketName: streaming-data-lake
+      Environment:
+        Variables:
+          targetUrl: 'https://api.github.com/search/code'
+          github_token: Github-Token
+          query: postman collections
+          s3bucket: streaming-data-lake
+          targetFolder: github-search-code
+          appToken: Streamdata.io-Application-Token
